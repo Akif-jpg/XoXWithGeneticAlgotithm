@@ -58,7 +58,6 @@ public class Match {
                     } else {
                         o.reset();
                         habitat.getWinnerOagents().add(o);
-
                     }
                     break;
                 } else if (!moveable(table)) {
@@ -109,7 +108,7 @@ public class Match {
         }
 
         // sütunları kontrol et
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i <= 2; i++) {
             if (values[i].equals(values[i + 3]) && values[i + 3].equals(values[i + 6]) && values[i] != Value.E) {
                 return true;
             }

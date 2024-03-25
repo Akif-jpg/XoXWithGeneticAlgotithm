@@ -33,9 +33,9 @@ public class Darwin {
     private Match match;
 
     public Darwin() {
-        this.agentsNumber = 15;
+        this.agentsNumber = 50;
         this.mutationDensity = 0.3f;
-        this.selectionsNumber = 5;
+        this.selectionsNumber = 15;
 
         this.habitat = new AgentsHabitat();
         this.habitat.generateAgents(this.agentsNumber, this.agentsNumber);
@@ -50,6 +50,10 @@ public class Darwin {
             crossover(habitat.getWinnerOagents());
             mutations();
             eliminate();
+            if(habitat.getXagents().size() > habitat.getOagents().size())
+                habitat.generateAgents(0, habitat.getXagents().size()-habitat.getOagents().size());
+            else
+                habitat.generateAgents(habitat.getOagents().size()-habitat.getXagents().size(), 0);
         }
     }
 
