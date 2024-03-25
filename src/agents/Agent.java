@@ -7,7 +7,7 @@ import models.MoveTree;
 import models.Table;
 import models.Value;
 
-public abstract class Agent {
+public abstract class Agent implements Cloneable{
     protected Value agentValue;
     protected Random random;
     protected MoveTree moveTree;
@@ -20,6 +20,12 @@ public abstract class Agent {
             moveTree.add(new MoveTree());
         }
 
+        bufferedMoveTree = this.moveTree;
+    }
+
+    protected Agent(MoveTree moveTree) {
+        random = new Random();
+        this.moveTree = moveTree;
         bufferedMoveTree = this.moveTree;
     }
 
@@ -99,6 +105,15 @@ public abstract class Agent {
 
     public MoveTree getMoveTree() {
         return this.moveTree;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        if(this.getAgentValue().equals(Value.X)){
+            return new Xagent((MoveTree) this.moveTree.clone());
+        }else{
+            return new Oagent((MoveTree) this.moveTree.clone());
+        }
     }
 
 }

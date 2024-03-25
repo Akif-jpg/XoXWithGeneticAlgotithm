@@ -2,7 +2,6 @@ package geneticalgorithm;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Map;
 
 import agents.Agent;
 import agents.Oagent;
@@ -26,19 +25,20 @@ public class Match {
     // ----------------------------------------------------------------
 
     public void play() {
-        LinkedList<Xagent> xagents = habitat.getXagents();
-        LinkedList<Oagent> oagents = habitat.getOagents();
+        LinkedList<Agent> xagents = habitat.getXagents();
+        LinkedList<Agent> oagents = habitat.getOagents();
         System.out
                 .println("Eşleştirmeler başladı " + Math.min(xagents.size(), oagents.size()) + " kadar maç oynanacak");
-        Map<Integer, Integer> matchOrder = habitat.setRandomMatches();
+        habitat.setRandomMatches();
         Table table;
         Xagent x;
         Oagent o;
         Agent agent;
-        for (int i = 0; i < Math.min(xagents.size(), oagents.size()); i++) {
+        int i = 0;
+        for (; i < Math.min(xagents.size(), oagents.size()); i++) {
             table = new Table();
-            x = xagents.get(i);
-            o = oagents.get(matchOrder.get(i));
+            x = (Xagent) xagents.get(i);
+            o = (Oagent) oagents.get(i);
             for (int j = 0; j < 9; j++) {
                 if (j % 2 == 0) {
                     agent = x;
@@ -49,13 +49,16 @@ public class Match {
                 if (isWinned(table)) {
                     // Maç kazanılmışsa
                     System.out.println("Maçı: %s kazandı".formatted(agent.getAgentValue()));
-                    // Kazanan ajan kazananlar ağacına kaydedilecek ve kaybeden ajan ise yok edilecek
+                    // Kazanan ajan kazananlar ağacına kaydedilecek ve kaybeden ajan ise yok
+                    // edilecek
                     if (j % 2 == 0) {
                         x.reset();
                         habitat.getWinnerXagents().add(x);
+
                     } else {
                         o.reset();
                         habitat.getWinnerOagents().add(o);
+
                     }
                     break;
                 } else if (!moveable(table)) {
@@ -69,6 +72,13 @@ public class Match {
                 }
             }
 
+        }
+        for (; i < Math.max(xagents.size(), oagents.size()); i++) {
+            if (xagents.size() > oagents.size()) {
+                habitat.getDwarfXagents().add(xagents.get(i));
+            } else {
+                habitat.getDwarfOagents().add(oagents.get(i));
+            }
         }
     }
 

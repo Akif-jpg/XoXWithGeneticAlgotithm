@@ -1,6 +1,7 @@
 package models;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class MoveTree implements Cloneable {
     public MoveTree nextTree;
@@ -17,6 +18,10 @@ public class MoveTree implements Cloneable {
     }
 
     // ----------------------------------------------------------------
+    /**
+     * add new node to movetree
+     * @param moveTree
+     */
     public void add(MoveTree moveTree) {
         if (this.nextTree == null) {
             this.nextTree = moveTree;
@@ -24,7 +29,10 @@ public class MoveTree implements Cloneable {
             this.nextTree.add(moveTree);
         }
     }
-
+    /**
+     * this function delete last item from movetree
+     * @return false if this node is not the last node, else returns true
+     */
     public boolean deleteLastItem() {
         if (this.nextTree != null && this.nextTree.deleteLastItem()) {
             this.nextTree = null;
@@ -35,7 +43,10 @@ public class MoveTree implements Cloneable {
         }
         return false;
     }
-
+    /**
+     * 
+     * @return length of this MoveTree
+     */
     public int size() {
         if (this.nextTree == null) {
             return 1;
@@ -43,7 +54,27 @@ public class MoveTree implements Cloneable {
 
         return this.nextTree.size() + 1;
     }
+    /**
+     * 
+     * @param moveTree
+     * @return models.MoveTree object equals moveTree
+     */
+    public MoveTree get(MoveTree moveTree) {
+        if (this.equals(moveTree)) {
+            return this;
+        } else if (this.nextTree != null) {
+            return this.nextTree.get(moveTree);
+        }
 
+        throw new IllegalStateException("Invalid index  out of range ");
+
+    }
+
+    /**
+     * 
+     * @param index
+     * @return movetree by index
+     */
     public MoveTree get(int index) {
         if (index == 0) {
             return this;
@@ -71,6 +102,22 @@ public class MoveTree implements Cloneable {
 
     }
 
+    public void merge(MoveTree tree){
+        Iterator<Table> itr = tree.tableMoveTree.keySet().iterator();
+        while(itr.hasNext()) {
+            Table tbl = itr.next();
+            //Eğer her iki tablodaki her bir eleman birbirine eşit ise eleman silinsin
+            this.tableMoveTree.keySet().removeIf(table -> tbl.equals(table));
+            //merge işlemi yapılsın
+            this.tableMoveTree.put(tbl, tree.tableMoveTree.get(tbl));
+        }
+        //Sıradaki ağaç için de merge işlemi yapılsın
+        if(tree.hasNext()&&this.hasNext()){
+            this.nextTree.merge(tree.nextTree);
+        }
+    }
+
+
     public boolean hasNext() {
         return this.nextTree != null;
     }
@@ -83,7 +130,5 @@ public class MoveTree implements Cloneable {
         }
         return new MoveTree((MoveTree) this.nextTree.clone(), (HashMap<Table, Move>) tableMoveTree.clone());
     }
-
-
 
 }
