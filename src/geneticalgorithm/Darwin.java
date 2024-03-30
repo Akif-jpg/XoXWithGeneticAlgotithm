@@ -33,9 +33,9 @@ public class Darwin {
     private Match match;
 
     public Darwin() {
-        this.agentsNumber = 50;
+        this.agentsNumber = 500;
         this.mutationDensity = 0.3f;
-        this.selectionsNumber = 15;
+        this.selectionsNumber = 2000;
 
         this.habitat = new AgentsHabitat();
         this.habitat.generateAgents(this.agentsNumber, this.agentsNumber);
@@ -50,10 +50,7 @@ public class Darwin {
             crossover(habitat.getWinnerOagents());
             mutations();
             eliminate();
-            if(habitat.getXagents().size() > habitat.getOagents().size())
-                habitat.generateAgents(0, habitat.getXagents().size()-habitat.getOagents().size());
-            else
-                habitat.generateAgents(habitat.getOagents().size()-habitat.getXagents().size(), 0);
+            habitat.generateAgents(agentsNumber - habitat.getXagents().size(), agentsNumber - habitat.getOagents().size());
         }
     }
 
@@ -132,8 +129,8 @@ public class Darwin {
         System.out.println("Kazanan x ajanları oyuna tekrar dahil ediliyor. Sayıları: "+habitat.getWinnerXagents().size());
         habitat.getWinnerXagents().forEach(agent -> habitat.getXagents().add(agent));
         habitat.getWinnerXagents().clear();
-        habitat.getDwarfXagents().forEach(agent -> habitat.getXagents().add(agent));
-        habitat.getDwarfXagents().clear();
+        habitat.getDrawXagents().forEach(agent -> habitat.getXagents().add(agent));
+        habitat.getDrawXagents().clear();
         System.out.println("x ajanlarının sayısı: "+habitat.getXagents().size());
         System.out.println("Kaybeden O ajanları elimine edildi");
         // O ajanları için eliminasyon ve kazanan veya kaybeden ajanların aktarılması
@@ -141,8 +138,8 @@ public class Darwin {
         System.out.println("Kazanan o ajanları oyuna tekrar dahil ediliyor. Sayıları: "+habitat.getWinnerOagents().size());
         habitat.getWinnerOagents().forEach(agent -> habitat.getOagents().add(agent));
         habitat.getWinnerOagents().clear();
-        habitat.getDwarfOagents().forEach(agent -> habitat.getOagents().add(agent));
-        habitat.getDwarfOagents().clear();
+        habitat.getDrawOagents().forEach(agent -> habitat.getOagents().add(agent));
+        habitat.getDrawOagents().clear();
         System.out.println("o ajanlarının sayısı: "+habitat.getOagents().size());
         
 

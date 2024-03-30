@@ -76,13 +76,13 @@ public class MoveTree implements Cloneable {
      * @return movetree by index
      */
     public MoveTree get(int index) {
-        if (index == 0) {
+        if (index <= 0) {
             return this;
         } else if (this.nextTree != null) {
             return this.nextTree.get(index--);
+        }else{
+            throw new IllegalStateException("Invalid index  out of range: " + index);
         }
-
-        throw new IllegalStateException("Invalid index  out of range: " + index);
     }
 
     /**

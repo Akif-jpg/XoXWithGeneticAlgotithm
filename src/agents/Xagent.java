@@ -1,5 +1,6 @@
 package agents;
 
+
 import models.MoveTree;
 import models.Value;
 
@@ -12,5 +13,6 @@ public class Xagent extends Agent{
         super(moveTree);
         this.agentValue = Value.X;
     }
+
 
 }

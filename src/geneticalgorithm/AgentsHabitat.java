@@ -18,8 +18,8 @@ public class AgentsHabitat {
     private LinkedList<Agent> winnerXagents;
     private LinkedList<Agent> winnerOagents;
 
-    private LinkedList<Agent> dwarfXagents;
-    private LinkedList<Agent> dwarfOagents;
+    private LinkedList<Agent> drawXagents;
+    private LinkedList<Agent> drawOagents;
 
     //----------------------------------------------------------------
     public AgentsHabitat(){
@@ -29,8 +29,8 @@ public class AgentsHabitat {
         this.winnerXagents = new LinkedList<Agent>();
         this.winnerOagents = new LinkedList<Agent>();
 
-        this.dwarfXagents = new LinkedList<Agent>();
-        this.dwarfOagents = new LinkedList<Agent>();
+        this.drawXagents = new LinkedList<Agent>();
+        this.drawOagents = new LinkedList<Agent>();
 
     
     }
@@ -77,13 +77,14 @@ public class AgentsHabitat {
     }
     public void generateAgents(int generateX, int generateO) {
         IntStream.range(0, generateX).forEach(x -> {
-            System.out.println("x ajanı üretildi number: " + x);
             this.xagents.add(new Xagent());
         });
+        System.out.println("%d adet X ajanı üretildi".formatted(generateX));
+        
         IntStream.range(0, generateO).forEach(x -> {
-            System.out.println("o ajanı üretildi number: " + x);
-            this.oagents.add(new Oagent());
+            this.oagents.add(new Oagent());        
         });
+        System.out.println("%d adet O ajanı üretildi".formatted(generateO));
     }
 
     public LinkedList<Agent> getXagents() {
@@ -102,12 +103,12 @@ public class AgentsHabitat {
         return winnerOagents;
     }
 
-    public LinkedList<Agent> getDwarfXagents() {
-        return dwarfXagents;
+    public LinkedList<Agent> getDrawXagents() {
+        return drawXagents;
     }
 
-    public LinkedList<Agent> getDwarfOagents() {
-        return dwarfOagents;
+    public LinkedList<Agent> getDrawOagents() {
+        return drawOagents;
     }
 
     public void setXagents(LinkedList<Agent> xagents) {
@@ -126,12 +127,12 @@ public class AgentsHabitat {
         this.winnerOagents = winnerOagents;
     }
 
-    public void setDwarfXagents(LinkedList<Agent> dwarfXagents) {
-        this.dwarfXagents = dwarfXagents;
+    public void setDrawXagents(LinkedList<Agent> drawXagents) {
+        this.drawXagents = drawXagents;
     }
 
-    public void setDwarfOagents(LinkedList<Agent> dwarfOagents) {
-        this.dwarfOagents = dwarfOagents;
+    public void setDrawOagents(LinkedList<Agent> drawOagents) {
+        this.drawOagents = drawOagents;
     }
 
 }
