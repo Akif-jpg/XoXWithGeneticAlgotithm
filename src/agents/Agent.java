@@ -3,6 +3,7 @@ package agents;
 import java.util.Iterator;
 import java.util.Random;
 
+import models.Move;
 import models.MoveTree;
 import models.Table;
 import models.Value;
@@ -19,6 +20,7 @@ public abstract class Agent implements Cloneable{
         for (int i = 0; i < 5; i++) {
             moveTree.add(new MoveTree());
         }
+
 
         bufferedMoveTree = this.moveTree;
     }
@@ -99,6 +101,25 @@ public abstract class Agent implements Cloneable{
         } while (clone.hasNext());
     }
 
+        public Move findMove(Table table){
+        MoveTree tree;  
+        int moveNumber = 6;
+        tree = this.moveTree;
+        for(int i = 0; i < moveNumber; i++){            
+            Iterator<Table> it =  tree.tableMoveTree.keySet().iterator();
+            while(it.hasNext()){
+               Table t = (Table) it.next();
+               if(t.equals(table)){
+                   return tree.tableMoveTree.get(t);
+               }
+            }
+            tree = moveTree.nextTree;
+        }
+        
+
+         return null;        
+        
+    }
     public Value getAgentValue(){
         return this.agentValue;
     }

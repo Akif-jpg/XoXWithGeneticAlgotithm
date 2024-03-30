@@ -18,4 +18,9 @@ public class Move {
         System.out.println("position %d value %s".formatted(position, value));
     }
 
+    @Override
+    public String toString(){
+        return "Move(position %d, value %s)".formatted(position, value);
+    }
+
 }

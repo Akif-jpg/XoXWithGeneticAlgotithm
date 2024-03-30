@@ -13,5 +13,6 @@ public class Oagent extends Agent{
         super(moveTree);
         this.agentValue = Value.O;
     }
+    
 
 }

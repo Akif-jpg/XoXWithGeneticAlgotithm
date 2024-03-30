@@ -11,31 +11,42 @@ import models.Value;
 
 public class Match {
     AgentsHabitat habitat;
+    int maxMatchNumber;
     // ----------------------------------------------------------------
+
+    public void setMaxMatchNumber(int maxMatchNumber) {
+        this.maxMatchNumber = maxMatchNumber;
+    }
 
     public Match() {
         super();
         habitat = new AgentsHabitat();
+        maxMatchNumber = 1500;
     }
 
     public Match(AgentsHabitat habitat) {
         super();
         this.habitat = habitat;
+        maxMatchNumber = 1500;
     }
     // ----------------------------------------------------------------
 
     public void play() {
         LinkedList<Agent> xagents = habitat.getXagents();
         LinkedList<Agent> oagents = habitat.getOagents();
+        int matchNumber = Math.min(maxMatchNumber,Math.min(xagents.size(), oagents.size()));
         System.out
-                .println("Eşleştirmeler başladı " + Math.min(xagents.size(), oagents.size()) + " kadar maç oynanacak");
+                .println("Eşleştirmeler başladı " + matchNumber + " kadar maç oynanacak");
         habitat.setRandomMatches();
         Table table;
         Xagent x;
         Oagent o;
         Agent agent;
         int i = 0;
-        for (; i < Math.min(xagents.size(), oagents.size()); i++) {
+        int winnerX = 0;
+        int winnerO = 0;
+        int draw = 0;
+        for (; i < matchNumber; i++) {
             table = new Table();
             x = (Xagent) xagents.get(i);
             o = (Oagent) oagents.get(i);
@@ -48,36 +59,42 @@ public class Match {
                 table = agent.move(table);
                 if (isWinned(table)) {
                     // Maç kazanılmışsa
-                    System.out.println("Maçı: %s kazandı".formatted(agent.getAgentValue()));
                     // Kazanan ajan kazananlar ağacına kaydedilecek ve kaybeden ajan ise yok
                     // edilecek
                     if (j % 2 == 0) {
                         x.reset();
                         habitat.getWinnerXagents().add(x);
+                        winnerX++;
 
                     } else {
                         o.reset();
                         habitat.getWinnerOagents().add(o);
-
+                        winnerO++;
                     }
                     break;
                 } else if (!moveable(table)) {
-                    System.out.println("Maç berabere bitti");
                     // Her iki ajanda birden berabere kalanlar uzayına eklenecek
                     x.reset();
                     o.reset();
-                    habitat.getDwarfOagents().add(o);
-                    habitat.getDwarfXagents().add(x);
+                    habitat.getDrawOagents().add(o);
+                    habitat.getDrawXagents().add(x);
+                    draw++;
 
                 }
             }
 
         }
+
+        System.out.println("Beraberlik sayısı: "+ draw);
+        System.out.println("Kazanan X Sayısı: "+ winnerX);
+        System.out.println("Kazanan O sayısı: "+ winnerO);
+
         for (; i < Math.max(xagents.size(), oagents.size()); i++) {
             if (xagents.size() > oagents.size()) {
-                habitat.getDwarfXagents().add(xagents.get(i));
-            } else {
-                habitat.getDwarfOagents().add(oagents.get(i));
+                if(xagents.size() < maxMatchNumber)
+                    habitat.getDrawXagents().add(xagents.get(i));
+            } else if(oagents.size() < maxMatchNumber) {
+                habitat.getDrawOagents().add(oagents.get(i));
             }
         }
     }
@@ -109,7 +126,7 @@ public class Match {
         }
 
         // sütunları kontrol et
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i <= 2; i++) {
             if (values[i].equals(values[i + 3]) && values[i + 3].equals(values[i + 6]) && values[i] != Value.E) {
                 return true;
             }

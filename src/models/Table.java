@@ -15,6 +15,25 @@ public class Table implements Cloneable{
         Arrays.setAll(values, value -> Value.E);
     }
 
+    public static Table fromString(String str){
+        String[] charset = str.split(" ");
+        Table table = new Table();
+        for(int i = 0; i < 9; i++){
+            switch(charset[i].toUpperCase()){
+                case "X":
+                    table.getValues()[i] = Value.X;  
+                    break;          
+                case "O":
+                    table.getValues()[i] = Value.O;
+                    break;
+                default:
+                    table.getValues()[i] = Value.E;
+                break;
+            }
+        }
+        return table;
+    }
+
     //Tabloyu yazdır
     public void printTable(){
        
